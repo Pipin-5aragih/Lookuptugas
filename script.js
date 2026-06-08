@@ -1,5 +1,6 @@
 let records = [];
 
+// Load CSV data
 fetch("data.csv")
     .then(response => response.text())
     .then(text => {
@@ -13,6 +14,19 @@ fetch("data.csv")
                 label: label.trim()
             });
         }
+    })
+    .catch(error => {
+        console.error("Error loading CSV:", error);
+    });
+
+// Handle form submission (button click OR Enter key)
+document
+    .getElementById("searchForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        searchId();
     });
 
 function searchId() {
@@ -56,4 +70,16 @@ function searchId() {
             </div>
         `;
     }
+}
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+                console.log('Service worker registered:', registration.scope);
+            })
+            .catch(error => {
+                console.warn('Service worker registration failed:', error);
+            });
+    });
 }
