@@ -80,7 +80,18 @@ function searchId() {
         .value
         .trim();
 
+    const selectedCode = subjectSelect.value;
+    const selectedSubject = subjects.find(subject => subject.kodemk === selectedCode);
     const result = document.getElementById("result");
+
+    if (!selectedCode) {
+        result.innerHTML = `
+            <div class="not-found">
+                Silakan pilih mata kuliah terlebih dahulu.
+            </div>
+        `;
+        return;
+    }
 
     const match = records.find(row => row.id === inputId);
 
@@ -89,6 +100,8 @@ function searchId() {
             <div class="result-card">
                 <h3>Tugas Untuk Mahasiswa</h3>
                 <p><strong>${match.nama} (${match.id})</strong></p>
+                <p><strong>Kode MK:</strong> ${selectedSubject?.kodemk || selectedCode}</p>
+                <p><strong>Nama MK:</strong> ${selectedSubject?.namaMK || 'Tidak tersedia'}</p>
                 <p><strong>Topik:</strong> ${match.topik}</p>
                 <p><strong>Subtopik:</strong></p>
                 <p class="subtopik">${match.subtopik}</p>
