@@ -63,16 +63,20 @@ h1 {
     align-items: stretch;
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 16px 18px;
     border: 1px solid #d1d5db;
     border-radius: 14px;
     font-size: 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: white;
+    color: #0f172a;
 }
 
-input:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);

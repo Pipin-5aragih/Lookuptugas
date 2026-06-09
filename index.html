@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="description" content="Assignment Lookup app to find student assignment topics by NPM.">
-    <title>Assignment Lookup</title>
+    <title>CariTugasbySautpin</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.svg">
     <link rel="stylesheet" href="style.css">
@@ -17,20 +17,25 @@
 <div class="app-shell">
     <div class="container">
         <header class="app-header">
-            <h1>Assignment Lookup</h1>
-            <p class="subtitle">Enter your Student ID (NPM)</p>
+            <h1>Lihat Topik Tugas</h1>
+            <p class="subtitle">Mata Kuliah MIS Saut Pintubipar Saragih </p>
         </header>
 
         <form id="searchForm" class="lookup-form">
+            <label for="subjectSelect" class="sr-only">Pilih Mata Kuliah</label>
+            <select id="subjectSelect" aria-label="Mata Kuliah">
+                <option value="">Pilih Mata Kuliah</option>
+            </select>
+
             <input
                 type="text"
                 id="idInput"
-                placeholder="Enter your NPM"
+                placeholder="Masukkan NPM Mahasiswa"
                 inputmode="numeric"
                 autocomplete="off"
                 aria-label="Student ID">
 
-            <button type="submit">Find Assignment</button>
+            <button type="submit">Lihat Tugas Saya </button>
         </form>
 
         <div id="result" class="result-container" aria-live="polite"></div>

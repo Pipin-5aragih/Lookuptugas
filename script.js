@@ -1,23 +1,67 @@
 let records = [];
+let subjects = [];
 
-// Load CSV data
-fetch("data.csv")
-    .then(response => response.text())
-    .then(text => {
-        const rows = text.trim().split("\n");
+const subjectSelect = document.getElementById("subjectSelect");
 
-        for (let i = 1; i < rows.length; i++) {
-            const [id, label] = rows[i].split(",");
-
-            records.push({
-                id: id.trim(),
-                label: label.trim()
-            });
-        }
-    })
-    .catch(error => {
-        console.error("Error loading CSV:", error);
+function parseCSV(text) {
+    return text.trim().split(/\r?\n/).map(row => {
+        const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+        return cols.map(c => c.replace(/^"|"$/g, "").replace(/""/g, '"').trim());
     });
+}
+
+function loadDatac() {
+    fetch("datac.csv")
+        .then(response => response.text())
+        .then(text => {
+            const rows = parseCSV(text);
+            rows.shift();
+
+            for (const clean of rows) {
+                const id = clean[0] || '';
+                const nama = clean[1] || '';
+                const topik = clean[2] || '';
+                const subtopik = clean[3] || '';
+
+                records.push({ id, nama, topik, subtopik });
+            }
+        })
+        .catch(error => {
+            console.error("Error loading datac.csv:", error);
+        });
+}
+
+function loadSubjects() {
+    fetch("subject.csv")
+        .then(response => response.text())
+        .then(text => {
+            const rows = text.trim().split(/\r?\n/);
+            rows.shift();
+
+            subjects = rows
+                .map(row => row.split(","))
+                .filter(cols => cols.length >= 2)
+                .map(cols => ({
+                    kodemk: cols[0].trim(),
+                    namaMK: cols[1].trim()
+                }));
+
+            subjectSelect.innerHTML = `
+                <option value="">Pilih Mata Kuliah</option>
+                ${subjects
+                    .map(subject => `
+                        <option value="${subject.kodemk}">${subject.namaMK}</option>
+                    `)
+                    .join("")}
+            `;
+        })
+        .catch(error => {
+            console.error("Error loading subject.csv:", error);
+        });
+}
+
+loadDatac();
+loadSubjects();
 
 // Handle form submission (button click OR Enter key)
 document
@@ -38,35 +82,22 @@ function searchId() {
 
     const result = document.getElementById("result");
 
-    const match = records.find(
-        row => row.id === inputId
-    );
+    const match = records.find(row => row.id === inputId);
 
     if (match) {
-
         result.innerHTML = `
             <div class="result-card">
-                <h3>Assignment Found</h3>
-
-                <p>
-                    <strong>Hi Student ${match.id}</strong>
-                </p>
-
-                <p>
-                    Your assignment topic is:
-                </p>
-
-                <p>
-                    <strong>"${match.label}"</strong>
-                </p>
+                <h3>Tugas Untuk Mahasiswa</h3>
+                <p><strong>${match.nama} (${match.id})</strong></p>
+                <p><strong>Topik:</strong> ${match.topik}</p>
+                <p><strong>Subtopik:</strong></p>
+                <p class="subtopik">${match.subtopik}</p>
             </div>
         `;
-
     } else {
-
         result.innerHTML = `
             <div class="not-found">
-                Sorry, we can't find your Student ID.
+                Maaf, kami tidak dapat menemukan NPM Anda.
             </div>
         `;
     }
